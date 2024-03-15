@@ -1,0 +1,12 @@
+spring:
+    application:
+        name: TramManagementSystem
+    datasource:
+        url: jdbc:postgresql://localhost:5432/TramSystemData
+        username: postgres
+        password: 1234
+    jpa:
+        hibernate:
+            ddl-auto: update
+        show-sql: false
+        open-in-view: true
