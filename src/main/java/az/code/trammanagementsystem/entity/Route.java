@@ -23,6 +23,8 @@ public class Route {
     @OneToOne
     @JoinColumn(name = "schedule_id")
     private RouteSchedule schedule;
+    @ElementCollection
+    private List<Double> waypoints;
 
     @Override
     public final boolean equals(Object o) {
