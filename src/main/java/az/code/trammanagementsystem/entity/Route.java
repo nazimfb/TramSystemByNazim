@@ -23,8 +23,10 @@ public class Route {
     @OneToOne
     @JoinColumn(name = "schedule_id")
     private RouteSchedule schedule;
-    @ElementCollection
-    private List<Double> waypoints;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Waypoint> waypoints;
+    @OneToMany
+    private List<TramRoute> trams;
 
     @Override
     public final boolean equals(Object o) {

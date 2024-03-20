@@ -30,6 +30,7 @@ public class RouteServiceImpl implements RouteService {
 
     @Override
     public Route createRoute(Route route) {
+        System.out.println(route);
         return repository.save(route);
     }
 

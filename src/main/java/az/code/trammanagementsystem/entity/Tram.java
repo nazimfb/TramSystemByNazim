@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -20,7 +21,6 @@ public class Tram {
     @OneToOne
     @JoinColumn(name = "driver_id")
     private Driver driver;
-    private boolean onRoute;
     private String latitude;
     private String longitude;
 

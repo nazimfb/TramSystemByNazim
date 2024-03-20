@@ -1,6 +1,5 @@
 package az.code.trammanagementsystem.controller;
 
-import az.code.trammanagementsystem.repository.RouteRepository;
 import az.code.trammanagementsystem.entity.Route;
 import az.code.trammanagementsystem.services.RouteService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/routes")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 public class RouteController {
 
     private final RouteService service;
