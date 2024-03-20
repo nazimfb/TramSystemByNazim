@@ -21,19 +21,23 @@ public class RouteController {
     private ResponseEntity<Route> createRoute(@RequestBody Route route) {
         return new ResponseEntity<>(service.createRoute(route), HttpStatus.OK);
     }
+
     @GetMapping
     private ResponseEntity<List<Route>> getAllRoutes() {
         return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
     }
+
     @GetMapping("/{id}")
     private ResponseEntity<Route> getRouteById(@PathVariable Long id) {
         return new ResponseEntity<>(service.getRoute(id), HttpStatus.OK);
     }
+
     @PutMapping("/{id}")
     private ResponseEntity<Route> updateRoute(@PathVariable Long id, @RequestBody Route route) {
         route.setId(id);
         return new ResponseEntity<>(service.updateRoute(route), HttpStatus.OK);
     }
+
     @DeleteMapping("/{id}")
     private HttpStatus deleteRoute(@PathVariable Long id) {
         service.deleteRoute(id);
