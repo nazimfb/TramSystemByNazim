@@ -1,8 +1,11 @@
 package az.code.trammanagementsystem.controller;
 
+import az.code.trammanagementsystem.dto.TramDTO;
 import az.code.trammanagementsystem.entity.Tram;
 import az.code.trammanagementsystem.services.TramService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +19,11 @@ import java.util.UUID;
 @CrossOrigin(origins = "http://127.0.0.1:5500")
 public class TramController {
     private final TramService service;
+    private final ModelMapper mapper;
 
     @PostMapping
-    private ResponseEntity<Tram> addTram(@RequestBody Tram tram) {
-        return new ResponseEntity<>(service.addTram(tram), HttpStatus.OK);
+    private ResponseEntity<Tram> addTram(@Valid @RequestBody TramDTO tramDto) {
+        return new ResponseEntity<>(service.addTram(mapper.map(tramDto,Tram.class)), HttpStatus.OK);
     }
 
     @GetMapping

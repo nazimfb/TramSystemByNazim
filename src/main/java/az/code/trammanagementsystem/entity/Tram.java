@@ -1,6 +1,7 @@
 package az.code.trammanagementsystem.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
@@ -19,11 +20,20 @@ public class Tram {
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
     @OneToOne
     @JoinColumn(name = "driver_id")
     private Driver driver;
+
+    private String manufacturer;
+    private String model;
+    private Integer manufactureYear;
+
     private String latitude;
     private String longitude;
+
+    @ManyToOne
+    private Route currentRoute;
 
     @Override
     public final boolean equals(Object o) {

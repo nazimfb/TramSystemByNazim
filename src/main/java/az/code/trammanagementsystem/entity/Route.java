@@ -16,17 +16,22 @@ public class Route {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     private String name;
+
     @OneToMany
     @ToString.Exclude
     private List<Stop> stops;
+
     @OneToOne
     @JoinColumn(name = "schedule_id")
     private RouteSchedule schedule;
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Waypoint> waypoints;
-    @OneToMany
-    private List<TramRoute> trams;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Tram> trams;
 
     @Override
     public final boolean equals(Object o) {
