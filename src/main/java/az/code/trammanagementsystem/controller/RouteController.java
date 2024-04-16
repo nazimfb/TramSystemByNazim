@@ -1,10 +1,9 @@
 package az.code.trammanagementsystem.controller;
 
-import az.code.trammanagementsystem.dto.RouteDTO;
-import az.code.trammanagementsystem.dto.RouteDetailDTO;
-import az.code.trammanagementsystem.dto.RouteSummaryDTO;
+import az.code.trammanagementsystem.dto.*;
 import az.code.trammanagementsystem.entity.Route;
 import az.code.trammanagementsystem.entity.Tram;
+import az.code.trammanagementsystem.entity.Waypoint;
 import az.code.trammanagementsystem.services.RouteService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -26,8 +25,10 @@ public class RouteController {
     private final ModelMapper mapper;
 
     @PostMapping
-    private ResponseEntity<Route> createRoute(@RequestBody RouteDTO routeDto) {
-        return new ResponseEntity<>(service.createRoute(mapper.map(routeDto,Route.class)), HttpStatus.OK);
+    private ResponseEntity<RouteDetailDTO> createRoute(@RequestBody RouteDTO routeDto) {
+        return new ResponseEntity<>(mapper.map(
+                service.createRoute(mapper.map(routeDto, Route.class)), RouteDetailDTO.class),
+                HttpStatus.OK);
     }
 
     @GetMapping
@@ -43,13 +44,25 @@ public class RouteController {
     }
 
     @GetMapping("/{id}/trams")
-    private ResponseEntity<List<Tram>> getTramsOnRoute(@PathVariable Long id) {
-        return new ResponseEntity<>(service.getTramsOnRoute(id), HttpStatus.OK);
+    private ResponseEntity<List<TramOnRouteDTO>> getTramsOnRoute(@PathVariable Long id) {
+        return new ResponseEntity<>(
+                service.getTramsOnRoute(id).stream()
+                        .map(tram -> mapper.map(tram, TramOnRouteDTO.class)).toList(),
+                HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/waypoints")
+    private ResponseEntity<List<WaypointDTO>> getRouteWaypoints(@PathVariable Long id) {
+        return new ResponseEntity<>(
+                service.getRouteWaypoints(id).stream()
+                        .map(waypoint -> mapper.map(waypoint, WaypointDTO.class))
+                        .toList(),
+                HttpStatus.OK);
     }
 
     @PostMapping("/{id}/trams")
-    private HttpStatus addTramToRoute(@RequestBody UUID tramId, @PathVariable Long id) {
-        service.addTramToRoute(tramId, id);
+    private HttpStatus addTramToRoute(@RequestBody AddTramToRouteDTO tramIdDto, @PathVariable Long id) {
+        service.addTramToRoute(mapper.map(tramIdDto, Tram.class), id);
         return HttpStatus.ACCEPTED;
     }
 
@@ -59,10 +72,17 @@ public class RouteController {
         return HttpStatus.NO_CONTENT;
     }
 
+    @GetMapping("/waypoints")
+    private ResponseEntity<List<RouteWaypointsDTO>> getRouteWaypoints() {
+        return new ResponseEntity<>(
+                service.getAll().stream()
+                        .map(route -> mapper.map(route, RouteWaypointsDTO.class)).toList(),
+                HttpStatus.OK);
+    }
+
     @PutMapping("/{id}")
-    private ResponseEntity<Route> updateRoute(@PathVariable Long id, @RequestBody Route route) {
-        route.setId(id);
-        return new ResponseEntity<>(service.updateRoute(route), HttpStatus.OK);
+    private ResponseEntity<Route> updateRoute(@PathVariable Long id, @RequestBody UpdateRouteDTO route) {
+        return new ResponseEntity<>(service.updateRoute(id, mapper.map(route,Route.class)), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

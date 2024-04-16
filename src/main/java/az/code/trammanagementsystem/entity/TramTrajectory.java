@@ -4,18 +4,18 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
 @Getter
 @Setter
-public class Waypoint {
+@Entity
+@Table(name = "tram_trajectory")
+public class TramTrajectory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private Double lat;
-    private Double lng;
+    private long id;
+    private double latitude;
+    private double longitude;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "route_id")
     private Route route;
-
 }

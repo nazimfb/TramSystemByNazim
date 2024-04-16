@@ -13,4 +13,6 @@ public class Stop {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Long id;
+    private Double latitude;
+    private Double longitude;
 }

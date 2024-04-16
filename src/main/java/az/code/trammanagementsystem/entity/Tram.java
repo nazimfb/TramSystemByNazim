@@ -1,7 +1,7 @@
 package az.code.trammanagementsystem.entity;
 
+import az.code.trammanagementsystem.validation.ValidManufactureYear;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
@@ -21,18 +21,21 @@ public class Tram {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @OneToOne
-    @JoinColumn(name = "driver_id")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "driver_id", referencedColumnName = "id")
     private Driver driver;
 
     private String manufacturer;
     private String model;
+
+    @ValidManufactureYear
     private Integer manufactureYear;
 
-    private String latitude;
-    private String longitude;
+    private Double latitude;
+    private Double longitude;
 
-    @ManyToOne
+    @ManyToOne( cascade = CascadeType.ALL)
+    @JoinColumn(name = "route_id", referencedColumnName = "id")
     private Route currentRoute;
 
     @Override
@@ -50,4 +53,12 @@ public class Tram {
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
+
+//    public int getLastWaypointIndex() {
+//        return 0;
+//    }
+//
+//    public void setLastWaypointIndex(int nextWaypointIndex) {
+//
+//    }
 }

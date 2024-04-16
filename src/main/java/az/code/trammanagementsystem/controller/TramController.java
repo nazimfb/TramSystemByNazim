@@ -1,6 +1,6 @@
 package az.code.trammanagementsystem.controller;
 
-import az.code.trammanagementsystem.dto.TramDTO;
+import az.code.trammanagementsystem.dto.*;
 import az.code.trammanagementsystem.entity.Tram;
 import az.code.trammanagementsystem.services.TramService;
 import jakarta.validation.Valid;
@@ -22,29 +22,50 @@ public class TramController {
     private final ModelMapper mapper;
 
     @PostMapping
-    private ResponseEntity<Tram> addTram(@Valid @RequestBody TramDTO tramDto) {
-        return new ResponseEntity<>(service.addTram(mapper.map(tramDto,Tram.class)), HttpStatus.OK);
+    private ResponseEntity<TramSummaryDTO> addTram(@Valid @RequestBody TramDTO tramDto) {
+        return new ResponseEntity<>(
+                mapper.map(service.addTram(mapper.map(tramDto,Tram.class)),
+                        TramSummaryDTO.class),
+                HttpStatus.OK);
     }
 
     @GetMapping
-    private ResponseEntity<List<Tram>> getAllTrams() {
-        return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
+    private ResponseEntity<List<TramSummaryDTO>> getAllTrams() {
+        return new ResponseEntity<>(service.getAll().stream()
+                .map(tram -> mapper.map(tram, TramSummaryDTO.class))
+                .toList(), HttpStatus.OK);
     }
 
+//    @GetMapping("/locatee")
+//    private String updateLocation() {
+//        service.updateLocation();
+//        return "yes";
+//    }
+
     @GetMapping("/{id}")
-    private ResponseEntity<Tram> getTramById(@PathVariable UUID id) {
-        return new ResponseEntity<>(service.getTram(id), HttpStatus.OK);
+    private ResponseEntity<TramDetailDTO> getTramById(@PathVariable UUID id) {
+        return new ResponseEntity<>(mapper.map(service.getTram(id), TramDetailDTO.class), HttpStatus.OK);
+    }
+
+    @GetMapping("/active")
+    private ResponseEntity<List<ActiveTramDTO>> getActiveTrams() {
+        return new ResponseEntity<>(service.getTramLocations().stream()
+                .map(tram -> mapper.map(tram, ActiveTramDTO.class)).toList(),
+                HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    private ResponseEntity<Tram> updateRoute(@PathVariable UUID id, @RequestBody Tram tram) {
-        tram.setId(id);
-        return new ResponseEntity<>(service.update(tram), HttpStatus.OK);
+    private ResponseEntity<TramDetailDTO> updateTram(@PathVariable UUID id, @RequestBody UpdateTramDTO tramDto) {
+        return new ResponseEntity<>(
+                mapper.map(
+                        service.updateTram(id, mapper.map(tramDto, Tram.class)),
+                        TramDetailDTO.class),
+                HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    private HttpStatus deleteRoute(@PathVariable UUID id) {
+    private ResponseEntity<HttpStatus> deleteTram(@PathVariable UUID id) {
         service.deleteTram(id);
-        return HttpStatus.NO_CONTENT;
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

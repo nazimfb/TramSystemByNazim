@@ -14,10 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RouteDetailDTO {
-    private long id;
     private String name;
     private List<Stop> stops;
     private RouteSchedule schedule;
-    private List<Waypoint> waypoints;
-    private List<Tram> trams;
 }

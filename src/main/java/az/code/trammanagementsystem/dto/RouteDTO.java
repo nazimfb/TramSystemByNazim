@@ -12,5 +12,5 @@ import java.util.List;
 @Builder
 public class RouteDTO {
     private String name;
-    private List<Waypoint> waypoints;
+    private List<WaypointDTO> waypoints;
 }

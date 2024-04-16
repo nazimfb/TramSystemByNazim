@@ -1,5 +1,6 @@
 package az.code.trammanagementsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -10,8 +11,9 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
-@ToString
+@Builder
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class Route {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,10 +29,15 @@ public class Route {
     @JoinColumn(name = "schedule_id")
     private RouteSchedule schedule;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "route", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Waypoint> waypoints;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "route", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<TramTrajectory> tramTrajectories;
+
+    @OneToMany(mappedBy = "currentRoute", cascade = CascadeType.ALL)
     private List<Tram> trams;
 
     @Override

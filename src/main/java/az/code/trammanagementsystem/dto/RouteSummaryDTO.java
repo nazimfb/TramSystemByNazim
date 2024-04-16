@@ -16,5 +16,4 @@ import java.util.List;
 public class RouteSummaryDTO {
     private long id;
     private String name;
-    private RouteSchedule schedule;
 }
