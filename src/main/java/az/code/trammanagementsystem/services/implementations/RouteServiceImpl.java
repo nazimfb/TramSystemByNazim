@@ -4,10 +4,7 @@ import az.code.trammanagementsystem.entity.Route;
 import az.code.trammanagementsystem.entity.Tram;
 import az.code.trammanagementsystem.entity.TramTrajectory;
 import az.code.trammanagementsystem.entity.Waypoint;
-import az.code.trammanagementsystem.exceptions.InvalidRouteFormatException;
-import az.code.trammanagementsystem.exceptions.RouteNotFoundException;
-import az.code.trammanagementsystem.exceptions.TramAlreadyOnRouteException;
-import az.code.trammanagementsystem.exceptions.TramNotAssignedToRouteException;
+import az.code.trammanagementsystem.exceptions.*;
 import az.code.trammanagementsystem.repository.RouteRepository;
 import az.code.trammanagementsystem.services.RouteService;
 import az.code.trammanagementsystem.services.TramService;
@@ -15,7 +12,6 @@ import az.code.trammanagementsystem.services.helpers.TrajectoryHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -93,6 +89,9 @@ public class RouteServiceImpl implements RouteService {
             throw new TramAlreadyOnRouteException("Tram with id " + newTram.getId()
                     + " is already on route with id "
                     + newTram.getCurrentRoute().getId());
+        else if (tram.getDriver() == null) {
+            throw new InvalidTramFormatException("Tram must have a driver before adding to route");
+        }
 
         newTram.setCurrentRoute(route); /*important*/
         List<Tram> trams = route.getTrams();

@@ -8,13 +8,13 @@ import java.io.Serial;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class TramException extends RuntimeException {
+public class StopException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = 1L;
 
     private final ErrorInfo errorInfo;
 
-    public TramException(ErrorInfo errorInfo) {
+    public StopException(ErrorInfo errorInfo) {
         this.errorInfo = errorInfo;
     }
 }

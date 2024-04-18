@@ -38,7 +38,7 @@ public class TrajectoryHelper {
                 double distance = calculateDistance(currentLat, currentLng, nextLat, nextLng);
 
                 // If distance is greater than 10m, add tram trajectory points
-                while (distance > 10) {
+                while (distance > 40) {
                     double fraction = 10 / distance;
                     double newLat = currentLat + (nextLat - currentLat) * fraction;
                     double newLng = currentLng + (nextLng - currentLng) * fraction;
@@ -62,15 +62,12 @@ public class TrajectoryHelper {
         return tramTrajectories;
     }
 
-    // Method to find the closest tram trajectory point to the current tram location
     public static TramTrajectory findClosestTrajectory(List<TramTrajectory> tramTrajectories, double currentLat, double currentLng) {
         TramTrajectory closestTrajectory = null;
         double minDistance = 10; // metres
 
         for (TramTrajectory trajectory : tramTrajectories) {
             double distance = calculateDistance(currentLat, currentLng, trajectory.getLatitude(), trajectory.getLongitude());
-//            System.out.println("distance: " + distance);
-//            System.out.println("min distance: " + minDistance);
             if (distance < minDistance) {
 //                minDistance = distance;
                 closestTrajectory = trajectory;

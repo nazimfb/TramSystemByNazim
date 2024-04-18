@@ -21,6 +21,12 @@ public class TramController {
     private final TramService service;
     private final ModelMapper mapper;
 
+//    @GetMapping("/locate")
+//    private String updateLocation() {
+//        service.updateLocation();
+//        return "yes";
+//    }
+
     @PostMapping
     private ResponseEntity<TramSummaryDTO> addTram(@Valid @RequestBody TramDTO tramDto) {
         return new ResponseEntity<>(
@@ -36,12 +42,6 @@ public class TramController {
                 .toList(), HttpStatus.OK);
     }
 
-//    @GetMapping("/locatee")
-//    private String updateLocation() {
-//        service.updateLocation();
-//        return "yes";
-//    }
-
     @GetMapping("/{id}")
     private ResponseEntity<TramDetailDTO> getTramById(@PathVariable UUID id) {
         return new ResponseEntity<>(mapper.map(service.getTram(id), TramDetailDTO.class), HttpStatus.OK);
@@ -55,10 +55,10 @@ public class TramController {
     }
 
     @PutMapping("/{id}")
-    private ResponseEntity<TramDetailDTO> updateTram(@PathVariable UUID id, @RequestBody UpdateTramDTO tramDto) {
+    private ResponseEntity<TramDetailDTO> updateTram(@PathVariable UUID id, @RequestBody UpdateTramDTO updateTramDTO) {
         return new ResponseEntity<>(
                 mapper.map(
-                        service.updateTram(id, mapper.map(tramDto, Tram.class)),
+                        service.updateTram(id, updateTramDTO),
                         TramDetailDTO.class),
                 HttpStatus.OK);
     }

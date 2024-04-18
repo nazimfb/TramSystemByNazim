@@ -4,17 +4,12 @@ import az.code.trammanagementsystem.dto.ErrorInfo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.Serial;
-
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class TramException extends RuntimeException {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
+public class DriverException extends RuntimeException {
     private final ErrorInfo errorInfo;
 
-    public TramException(ErrorInfo errorInfo) {
+    public DriverException(ErrorInfo errorInfo) {
         this.errorInfo = errorInfo;
     }
 }

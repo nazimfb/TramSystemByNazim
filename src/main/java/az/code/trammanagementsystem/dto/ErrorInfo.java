@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
-@JsonPropertyOrder({ "code", "message" })
+@JsonPropertyOrder({ "status", "message", "timestamp" })
 public class ErrorInfo {
-
-    private Integer code;
-
+    private Integer status;
     private String message;
-
+    private final LocalDateTime timestamp = LocalDateTime.now();
 }

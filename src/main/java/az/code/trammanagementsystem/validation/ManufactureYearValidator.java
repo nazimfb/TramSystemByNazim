@@ -4,7 +4,6 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class ManufactureYearValidator implements ConstraintValidator<ValidManufactureYear, Integer> {
     @Override

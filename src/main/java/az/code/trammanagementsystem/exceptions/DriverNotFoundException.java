@@ -1,21 +1,13 @@
 package az.code.trammanagementsystem.exceptions;
 
 import az.code.trammanagementsystem.dto.ErrorInfo;
+import lombok.EqualsAndHashCode;
 
-import java.io.Serial;
 
+@EqualsAndHashCode(callSuper = true)
+public class DriverNotFoundException extends DriverException {
 
-public class DriverNotFoundException extends RuntimeException {
-    private ErrorInfo errorInfo;
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    @Override
-    public String getMessage() {
-        return super.getMessage();
-    }
-
-    public ErrorInfo getErrorInfo() {
-        return this.errorInfo;
+    public DriverNotFoundException() {
+        super(ErrorInfo.builder().status(404).message("Driver not found").build());
     }
 }

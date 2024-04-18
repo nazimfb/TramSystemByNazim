@@ -4,8 +4,8 @@ import az.code.trammanagementsystem.dto.ErrorInfo;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
-public class TramNotAssignedToRouteException extends TramException {
-    public TramNotAssignedToRouteException(String message) {
+public class InvalidTramFormatException extends TramException {
+    public InvalidTramFormatException(String message) {
         super(ErrorInfo.builder().status(400).message(message).build());
     }
 }

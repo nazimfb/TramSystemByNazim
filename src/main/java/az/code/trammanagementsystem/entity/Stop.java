@@ -1,13 +1,14 @@
 package az.code.trammanagementsystem.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Stop {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

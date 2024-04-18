@@ -21,14 +21,4 @@ public class RouteExceptionController {
     public ResponseEntity<Object> exception(InvalidRouteFormatException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
-
-    @ExceptionHandler(value = TramAlreadyOnRouteException.class)
-    public ResponseEntity<Object> exception(TramAlreadyOnRouteException exception) {
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(value = TramNotAssignedToRouteException.class)
-    public ResponseEntity<Object> exception(TramNotAssignedToRouteException exception) {
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
-    }
 }

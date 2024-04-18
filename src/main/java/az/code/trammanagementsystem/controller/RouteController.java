@@ -3,7 +3,6 @@ package az.code.trammanagementsystem.controller;
 import az.code.trammanagementsystem.dto.*;
 import az.code.trammanagementsystem.entity.Route;
 import az.code.trammanagementsystem.entity.Tram;
-import az.code.trammanagementsystem.entity.Waypoint;
 import az.code.trammanagementsystem.services.RouteService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
