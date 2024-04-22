@@ -24,11 +24,11 @@ public class SecurityConfigDevProfile {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable()).authorizeHttpRequests((authorizeHttpRequests) ->
                         authorizeHttpRequests
-                                .requestMatchers("/api/v1/auth/**").permitAll()
+                                .requestMatchers("/api/v1/auth/*").permitAll()
                                 .requestMatchers("/api/v1/stops").permitAll()
+                                .requestMatchers("/api/v1/users").hasRole("ADMIN")
                                 .requestMatchers("/swagger-ui/index.html").permitAll()
-                                .anyRequest().permitAll()
-                )
+                                .anyRequest().permitAll())
                 .sessionManagement(Customizer.withDefaults())
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);

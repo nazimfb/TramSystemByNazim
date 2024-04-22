@@ -2,12 +2,14 @@ package az.code.trammanagementsystem.services.implementations;
 
 import az.code.trammanagementsystem.entity.ConfirmationToken;
 import az.code.trammanagementsystem.entity.User;
+import az.code.trammanagementsystem.exceptions.ConfirmationTokenNotValidException;
 import az.code.trammanagementsystem.repository.ConfirmationTokenRepo;
 import az.code.trammanagementsystem.services.ConfirmationTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -16,12 +18,9 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
     private final ConfirmationTokenRepo repo;
     public ConfirmationToken generateConfirmationToken(User user){
         LocalDateTime now = LocalDateTime.now();
+        LocalDateTime expiryDate = now.plusDays(10);
         return repo.save(ConfirmationToken.builder()
-                .expiryDate(LocalDateTime.of(
-                        now.getYear(),
-                        now.getMonth(),
-                        now.getDayOfMonth() + 10,
-                        0,0))
+                .expiryDate(expiryDate)
                 .user(user)
                 .token(UUID.randomUUID().toString())
                 .build());
@@ -29,12 +28,20 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
 
     @Override
     public ConfirmationToken getByToken(String token) {
-        return repo.findByToken(token).orElse(null);
+        Optional<ConfirmationToken> tokenOptional = repo.findByToken(token);
+        if (tokenOptional.isEmpty())
+            throw new ConfirmationTokenNotValidException();
+        return tokenOptional.get();
     }
 
     @Override
-    public void delete(ConfirmationToken token) {
-        repo.delete(token);
+    public void delete(String token) {
+        ConfirmationToken confirmationToken = getByToken(token);
+        try {
+            repo.delete(confirmationToken);
+        } catch (Exception e) {
+            throw new ConfirmationTokenNotValidException(e.getMessage());
+        }
     }
 }
 

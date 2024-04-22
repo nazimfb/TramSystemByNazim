@@ -81,21 +81,21 @@ public class RouteServiceImpl implements RouteService {
     }
 
     @Override
-    public void addTramToRoute(Tram tram, Long routeId) {
+    public void addTramToRoute(UUID tramId, Long routeId) {
         Route route = getRoute(routeId);
-        Tram newTram = tramService.getTram(tram.getId());
+        Tram tram = tramService.getTram(tramId);
 
-        if (newTram.getCurrentRoute() != null)
-            throw new TramAlreadyOnRouteException("Tram with id " + newTram.getId()
+        if (tram.getCurrentRoute() != null)
+            throw new TramAlreadyOnRouteException("Tram with id " + tram.getId()
                     + " is already on route with id "
-                    + newTram.getCurrentRoute().getId());
+                    + tram.getCurrentRoute().getId());
         else if (tram.getDriver() == null) {
             throw new InvalidTramFormatException("Tram must have a driver before adding to route");
         }
 
-        newTram.setCurrentRoute(route); /*important*/
+        tram.setCurrentRoute(route); /*important*/
         List<Tram> trams = route.getTrams();
-        trams.add(newTram);
+        trams.add(tram);
         route.setTrams(trams); /*also important*/
 
         repository.save(route);
@@ -111,7 +111,6 @@ public class RouteServiceImpl implements RouteService {
                     + " is not assigned to the route " + routeId);
 
         tram.setCurrentRoute(null);
-        // important
         tram.setLatitude(null);
         tram.setLongitude(null);
 

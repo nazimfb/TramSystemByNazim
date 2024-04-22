@@ -63,6 +63,14 @@ public class TramController {
                 HttpStatus.OK);
     }
 
+    @DeleteMapping("/{id}/driver")
+    private ResponseEntity<TramDetailDTO> deleteTramDriver(@PathVariable UUID id) {
+        return new ResponseEntity<>(mapper.map(
+                service.deleteTramDriver(id),
+                TramDetailDTO.class),
+                HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     private ResponseEntity<HttpStatus> deleteTram(@PathVariable UUID id) {
         service.deleteTram(id);

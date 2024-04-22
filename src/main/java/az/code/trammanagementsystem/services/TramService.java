@@ -15,4 +15,6 @@ public interface TramService {
     void deleteTram(UUID id);
 
     List<Tram> getTramLocations();
+
+    Tram deleteTramDriver(UUID tramId);
 }

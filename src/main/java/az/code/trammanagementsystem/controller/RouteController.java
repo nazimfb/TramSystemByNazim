@@ -7,6 +7,7 @@ import az.code.trammanagementsystem.services.RouteService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,9 +60,9 @@ public class RouteController {
                 HttpStatus.OK);
     }
 
-    @PostMapping("/{id}/trams")
-    private HttpStatus addTramToRoute(@RequestBody AddTramToRouteDTO tramIdDto, @PathVariable Long id) {
-        service.addTramToRoute(mapper.map(tramIdDto, Tram.class), id);
+    @PostMapping(value = "/{id}/trams", consumes = MediaType.APPLICATION_JSON_VALUE)
+    private HttpStatus addTramToRoute(@RequestBody UUID tramId, @PathVariable Long id) {
+        service.addTramToRoute(tramId, id);
         return HttpStatus.ACCEPTED;
     }
 

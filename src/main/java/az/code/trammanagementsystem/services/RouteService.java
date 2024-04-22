@@ -17,7 +17,7 @@ public interface RouteService {
 
     void deleteRoute(Long id);
     List<Tram> getTramsOnRoute(Long id);
-    void addTramToRoute(Tram tram, Long routeId);
+    void addTramToRoute(UUID tramId, Long routeId);
     void deleteTramFromRoute(Long routeId, UUID tramId);
 
     List<Waypoint> getRouteWaypoints(Long id);

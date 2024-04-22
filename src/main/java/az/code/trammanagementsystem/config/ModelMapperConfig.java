@@ -25,12 +25,22 @@ public class ModelMapperConfig {
                 .addMappings(mapper -> mapper.map(tram -> tram.getDriver().getName(), TramDetailDTO::setDriverName));
 
         modelMapper.typeMap(Tram.class, TramSummaryDTO.class)
-                .addMappings(mapper -> mapper.using(context -> mapRouteToActive((Route) context.getSource())).map(Tram::getCurrentRoute, TramSummaryDTO::setActive));
+                .addMappings(mapper -> mapper.using(context -> mapRouteToActive((Route) context.getSource())).map(Tram::getCurrentRoute, TramSummaryDTO::setActive))
+                .addMappings(mapper -> mapper.map(tram -> tram.getDriver().getName(), TramSummaryDTO::setDriverName));
 //                .addMappings(mapper -> mapper.map(tram -> tram.getCurrentRoute().getId(), TramSummaryDTO::setCurrentRouteId))
 //                .addMappings(mapper -> mapper.map(tram -> tram.getCurrentRoute().getName(), TramSummaryDTO::setCurrentRouteName));
 
-        modelMapper.typeMap(DriverDetailsDTO.class, Driver.class)
-                .addMappings(mapper -> mapper.map(DriverDetailsDTO::getCurrentTramId, (driver, tramId) -> driver.setCurrentTram(Tram.builder().id((UUID) tramId).build())));
+        modelMapper.typeMap(Tram.class, ActiveTramDTO.class)
+                .addMappings(mapper -> mapper.map(tram -> tram.getDriver().getId(), ActiveTramDTO::setDriverId));
+
+        modelMapper.typeMap(Driver.class, DriverDetailsDTO.class)
+                        .addMappings(mapper -> mapper.map(driver -> driver.getCurrentTram().getId(), DriverDetailsDTO::setCurrentTramId));
+
+        modelMapper.typeMap(Driver.class, DriverSummaryDTO.class)
+                .addMappings(mapper -> mapper.map(driver -> driver.getCurrentTram().getId(), DriverSummaryDTO::setCurrentTramId));
+
+//        modelMapper.typeMap(DriverDetailsDTO.class, Driver.class)
+//                .addMappings(mapper -> mapper.map(DriverDetailsDTO::getCurrentTramId, (driver, tramId) -> driver.setCurrentTram(Tram.builder().id((UUID) tramId).build())));
 //        modelMapper.typeMap(Route.class, RouteWaypointsDTO.class)
 //                .addMapping(Route::getId, RouteWaypointsDTO::setId)
 //                .addMapping(Route::getWaypoints, RouteWaypointsDTO::setWaypoints);

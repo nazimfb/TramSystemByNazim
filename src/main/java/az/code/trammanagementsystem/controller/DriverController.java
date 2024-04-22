@@ -1,7 +1,9 @@
 package az.code.trammanagementsystem.controller;
 
+import az.code.trammanagementsystem.dto.DriverDTO;
 import az.code.trammanagementsystem.dto.DriverDetailsDTO;
 import az.code.trammanagementsystem.dto.DriverSummaryDTO;
+import az.code.trammanagementsystem.dto.UpdateDriverDTO;
 import az.code.trammanagementsystem.entity.Driver;
 import az.code.trammanagementsystem.services.DriverService;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +24,7 @@ public class DriverController {
     private final ModelMapper mapper;
 
     @PostMapping
-    private ResponseEntity<DriverDetailsDTO> addDriver(@RequestBody DriverDetailsDTO driverDTO) {
+    private ResponseEntity<DriverDetailsDTO> addDriver(@RequestBody DriverDTO driverDTO) {
         return new ResponseEntity<>(mapper.map(
                 service.addDriver(mapper.map(driverDTO, Driver.class)), DriverDetailsDTO.class),
                 HttpStatus.OK);
@@ -41,7 +43,7 @@ public class DriverController {
     }
 
     @PutMapping("/{id}")
-    private ResponseEntity<DriverDetailsDTO> updateDriverInfo(@PathVariable Long id, @RequestBody DriverDetailsDTO driverData) {
+    private ResponseEntity<DriverDetailsDTO> updateDriverInfo(@PathVariable Long id, @RequestBody UpdateDriverDTO driverData) {
         return new ResponseEntity<>(mapper.map(
                 service.updateDriver(id, mapper.map(driverData, Driver.class)),
                 DriverDetailsDTO.class),

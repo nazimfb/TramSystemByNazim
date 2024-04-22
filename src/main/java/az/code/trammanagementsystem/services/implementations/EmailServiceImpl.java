@@ -20,26 +20,11 @@ public class EmailServiceImpl implements EmailService {
     public void sendConfirmationEmail(String to, String confirmationToken) {
         SimpleMailMessage message = new SimpleMailMessage();
 
-        message.setFrom("tensrapidteam@gmail.com");
+        message.setFrom(supportEmail);
         message.setTo(to);
         message.setSubject("Confirmation Email");
         message.setText("Welcome to our application! Please confirm your email address by clicking the link below:\n" +
                 "http://localhost:8080/api/v1/auth/confirm?confirmationToken=" + confirmationToken);
         javaMailSender.send(message);
-    }
-
-    @Override
-    public void sentMailMessage(String to, String notification) {
-        try {
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setSubject("Task Notification");
-            message.setFrom(supportEmail);
-            message.setTo(to);
-            message.setText(notification);
-            javaMailSender.send(message);
-        } catch (Exception e) {
-            log.error("An error occurred while sending the email: {}", e.getMessage());
-            throw new RuntimeException("An error occurred while sending the email. Please try again later.");
-        }
     }
 }

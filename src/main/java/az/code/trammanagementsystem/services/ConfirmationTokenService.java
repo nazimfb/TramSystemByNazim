@@ -6,5 +6,5 @@ import az.code.trammanagementsystem.entity.User;
 public interface ConfirmationTokenService {
     ConfirmationToken generateConfirmationToken(User user);
     ConfirmationToken getByToken(String token);
-    void delete(ConfirmationToken token);
+    void delete(String token);
 }

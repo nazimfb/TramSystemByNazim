@@ -15,4 +15,5 @@ public class ActiveTramDTO {
     private UUID id;
     private Double latitude;
     private Double longitude;
+    private Long driverId;
 }

@@ -19,7 +19,7 @@ import java.util.function.Function;
 @Slf4j
 public class JwtService {
     private static final String SECRET_KEY = "8f09669ab33ae0c90f375f07bca6b22f5ac2a496e505c5ffa3cf15460b69a882";
-    private static final long ACCESS_TOKEN_EXPIRATION_TIME_MS = 1000 * 60 * 60; // 1 hour
+    private static final long ACCESS_TOKEN_EXPIRATION_TIME_MS = 1000 * 60 * 10; // 1 hour
     private static final long REFRESH_TOKEN_EXPIRATION_TIME_MS = 1000L * 60 * 60 * 24; // 1 day
 
     public String extractUsername(String token) {

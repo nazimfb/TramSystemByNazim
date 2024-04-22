@@ -19,5 +19,4 @@ public class Driver {
     private String name;
     @OneToOne(mappedBy = "driver")
     private Tram currentTram;
-
 }

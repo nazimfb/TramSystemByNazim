@@ -2,9 +2,7 @@ package az.code.trammanagementsystem.services.implementations;
 
 import az.code.trammanagementsystem.dto.UpdateTramDTO;
 import az.code.trammanagementsystem.entity.*;
-import az.code.trammanagementsystem.exceptions.DriverNotFoundException;
-import az.code.trammanagementsystem.exceptions.InvalidTramFormatException;
-import az.code.trammanagementsystem.exceptions.TramNotFoundException;
+import az.code.trammanagementsystem.exceptions.*;
 import az.code.trammanagementsystem.repository.DriverRepository;
 import az.code.trammanagementsystem.repository.TramRepository;
 import az.code.trammanagementsystem.services.TramService;
@@ -51,11 +49,17 @@ public class TramServiceImpl implements TramService {
         Tram tram = getTram(id);
 
         if (updatedTram.getDriverId() != null) {
+            if (tram.getCurrentRoute() != null)
+                throw new TramMustNotBeOnRouteException("Remove tram from route to change its driver");
+
             Optional<Driver> driver = driverRepository.findById(updatedTram.getDriverId());
             if (driver.isEmpty())
                 throw new DriverNotFoundException();
+            if (driver.get().getCurrentTram() != null)
+                throw new DriverAlreadyInTramException();
             tram.setDriver(driver.get());
         }
+
         if (updatedTram.getModel() != null)
             tram.setModel(updatedTram.getModel());
 
@@ -73,36 +77,45 @@ public class TramServiceImpl implements TramService {
         return repository.findByCurrentRouteNotNull();
     }
 
+    @Override
+    public Tram deleteTramDriver(UUID tramId) {
+        Tram tram = getTram(tramId);
+        if (tram.getCurrentRoute() != null)
+            throw new TramMustNotBeOnRouteException();
+
+        if (tram.getDriver() != null) {
+            Optional<Driver> driver = driverRepository.findById(tram.getDriver().getId());
+            if (driver.isPresent()) {
+                driver.get().setCurrentTram(null);
+                tram.setDriver(null);
+            }
+        } else throw new TramHasNoDriverException();
+
+        return repository.save(tram);
+    }
 
     @Scheduled(fixedRate = 5000)
-    private void updateLocation() {
+    private void updateTramsLocations() {
         List<Tram> activeTrams = repository.findByCurrentRouteNotNull();
         for (Tram activeTram : activeTrams) {
             Route currentRoute = activeTram.getCurrentRoute();
-            if (currentRoute != null
-                    && currentRoute.getTramTrajectories() != null
-                    && !currentRoute.getTramTrajectories().isEmpty()) {
+            if (currentRoute != null && !currentRoute.getTramTrajectories().isEmpty()) {
                 List<TramTrajectory> tramTrajectories = currentRoute.getTramTrajectories();
-                List<TramTrajectory> reverseTramTrajectories = new ArrayList<>(tramTrajectories);
-                Collections.reverse(reverseTramTrajectories);
 
-                if (activeTram.getLatitude() == null || activeTram.getLongitude() == null) {
-                    TramTrajectory firstTrajectory = tramTrajectories.getFirst();
-                    activeTram.setLatitude(firstTrajectory.getLatitude());
-                    activeTram.setLongitude(firstTrajectory.getLongitude());
-                } else if (activeTram.getLatitude() == tramTrajectories.getLast().getLatitude()
-                        && activeTram.getLongitude() == tramTrajectories.getLast().getLongitude()) {
-                    TramTrajectory firstReverseTrajectory = reverseTramTrajectories.getFirst();
-                    activeTram.setLatitude(firstReverseTrajectory.getLatitude());
-                    activeTram.setLongitude(firstReverseTrajectory.getLongitude());
-                } else {
-                    double currentLat = activeTram.getLatitude();
-                    double currentLng = activeTram.getLongitude();
-                    TramTrajectory closestTrajectory = findClosestTrajectory(tramTrajectories, currentLat, currentLng);
+                // Get the current position of the tram
+                double currentLat = activeTram.getLatitude();
+                double currentLng = activeTram.getLongitude();
 
-                    activeTram.setLatitude(closestTrajectory.getLatitude());
-                    activeTram.setLongitude(closestTrajectory.getLongitude());
-                }
+                // Find the closest trajectory point to the tram's current position
+                TramTrajectory closestTrajectory = findClosestTrajectory(tramTrajectories, currentLat, currentLng);
+
+                // Update tram's position to the next trajectory point
+                int currentIndex = tramTrajectories.indexOf(closestTrajectory);
+                int nextIndex = (currentIndex + 1) % tramTrajectories.size(); // Wrap around if reached the end
+
+                TramTrajectory nextTrajectory = tramTrajectories.get(nextIndex);
+                activeTram.setLatitude(nextTrajectory.getLatitude());
+                activeTram.setLongitude(nextTrajectory.getLongitude());
 
                 repository.save(activeTram);
             }

@@ -6,10 +6,10 @@ import java.lang.annotation.*;
 
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = ManufactureYearValidator.class)
+@Constraint(validatedBy = UniqueUsernameValidator.class)
 @Documented
-public @interface ValidManufactureYear {
-    String message() default "Invalid manufacture year";
+public @interface UniqueUsername {
+    String message() default "Username already exists";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
