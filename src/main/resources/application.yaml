@@ -22,3 +22,8 @@ spring:
             mail.smtp:
                 auth: true
                 starttls.enable: true
+
+google:
+    maps:
+        api:
+            key: AIzaSyA4jmkNsWVP6wVGoQ2UzrL4w0OmeoJvCM0

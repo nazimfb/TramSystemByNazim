@@ -23,9 +23,6 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
         AuthenticationResponse response = service.authenticate(request);
-//        if (response == null) {
-//            throw new AuthException(401,"Email or password is wrong");
-//        }
         return ResponseEntity.ok(response);
     }
 
