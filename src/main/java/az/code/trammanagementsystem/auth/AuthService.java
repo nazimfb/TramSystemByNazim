@@ -96,7 +96,12 @@ public class AuthService {
         if (refreshToken == null || refreshToken.isEmpty())
             throw new AuthException(400, "Token can not be empty");
 
+        if (jwtService == null) {
+            throw new AuthException(500, "JWT Service is not initialized");
+        }
+
         if (!jwtService.isExpired(refreshToken)
+                && jwtService.extractTokenType(refreshToken) != null
                 && jwtService.extractTokenType(refreshToken).equalsIgnoreCase("refresh")) {
             try {
                 String username = jwtService.extractUsername(refreshToken);

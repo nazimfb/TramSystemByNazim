@@ -16,24 +16,11 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/trams")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = "http://192.168.1.69:8000")
 public class TramController {
     private final TramService service;
     private final ModelMapper mapper;
 
-//    @GetMapping("/locate")
-//    private String updateLocation() {
-//        service.updateLocation();
-//        return "yes";
-//    }
-
-    @PostMapping
-    private ResponseEntity<TramSummaryDTO> addTram(@Valid @RequestBody TramDTO tramDto) {
-        return new ResponseEntity<>(
-                mapper.map(service.addTram(mapper.map(tramDto,Tram.class)),
-                        TramSummaryDTO.class),
-                HttpStatus.OK);
-    }
 
     @GetMapping
     private ResponseEntity<List<TramSummaryDTO>> getAllTrams() {
@@ -75,5 +62,13 @@ public class TramController {
     private ResponseEntity<HttpStatus> deleteTram(@PathVariable UUID id) {
         service.deleteTram(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping
+    private ResponseEntity<TramSummaryDTO> addTram(@Valid @RequestBody TramDTO tramDto) {
+        return new ResponseEntity<>(
+                mapper.map(service.addTram(mapper.map(tramDto,Tram.class)),
+                        TramSummaryDTO.class),
+                HttpStatus.OK);
     }
 }

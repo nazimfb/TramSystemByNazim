@@ -25,9 +25,9 @@ public class Route {
     @ToString.Exclude
     private List<Stop> stops;
 
-    @OneToOne
-    @JoinColumn(name = "schedule_id")
-    private RouteSchedule schedule;
+//    @OneToOne
+//    @JoinColumn(name = "schedule_id")
+//    private RouteSchedule schedule;
 
     @OneToMany(mappedBy = "route", cascade = CascadeType.ALL)
     @JsonIgnore

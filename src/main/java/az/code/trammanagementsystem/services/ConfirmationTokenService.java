@@ -7,4 +7,6 @@ public interface ConfirmationTokenService {
     ConfirmationToken generateConfirmationToken(User user);
     ConfirmationToken getByToken(String token);
     void delete(String token);
+
+    Boolean expired(String token);
 }

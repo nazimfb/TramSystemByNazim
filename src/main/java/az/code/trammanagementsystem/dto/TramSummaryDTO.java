@@ -16,5 +16,6 @@ public class TramSummaryDTO {
     private String model;
     private Integer manufactureYear;
     private boolean active;
+    private Integer driverId;
     private String driverName;
 }

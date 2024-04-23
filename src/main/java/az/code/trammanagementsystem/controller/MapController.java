@@ -2,11 +2,13 @@ package az.code.trammanagementsystem.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
+@CrossOrigin(origins = "http://192.168.1.69:8000")
 public class MapController {
 
     @Value("${google.maps.api.key}")
@@ -19,4 +21,3 @@ public class MapController {
         return restTemplate.getForEntity(url, String.class);
     }
 }
-

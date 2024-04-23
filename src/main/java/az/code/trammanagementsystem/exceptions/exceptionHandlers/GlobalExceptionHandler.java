@@ -35,6 +35,12 @@ public class GlobalExceptionHandler {
                 .body(ErrorInfo.builder().status(400).message(ex.getMessage()).build());
     }
 
+//    @ExceptionHandler(value = NullPointerException.class)
+//    public ResponseEntity<ErrorInfo> nullExceptions(NullPointerException ex) {
+//        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+//                .body(ErrorInfo.builder().status(400).message(ex.getMessage()).build());
+//    }
+
     @ExceptionHandler(value = HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorInfo> handleHttpExceptions(HttpMessageNotReadableException exception) {
         return new ResponseEntity<>(

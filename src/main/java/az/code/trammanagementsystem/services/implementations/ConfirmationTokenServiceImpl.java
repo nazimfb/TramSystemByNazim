@@ -2,6 +2,7 @@ package az.code.trammanagementsystem.services.implementations;
 
 import az.code.trammanagementsystem.entity.ConfirmationToken;
 import az.code.trammanagementsystem.entity.User;
+import az.code.trammanagementsystem.exceptions.AuthException;
 import az.code.trammanagementsystem.exceptions.ConfirmationTokenNotValidException;
 import az.code.trammanagementsystem.repository.ConfirmationTokenRepo;
 import az.code.trammanagementsystem.services.ConfirmationTokenService;
@@ -41,6 +42,16 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
             repo.delete(confirmationToken);
         } catch (Exception e) {
             throw new ConfirmationTokenNotValidException(e.getMessage());
+        }
+    }
+
+    @Override
+    public Boolean expired(String token) {
+        try {
+            ConfirmationToken confirmationToken = getByToken(token);
+            return LocalDateTime.now().isBefore(confirmationToken.getExpiryDate());
+        } catch (Exception e) {
+            throw new AuthException(e.getMessage());
         }
     }
 }

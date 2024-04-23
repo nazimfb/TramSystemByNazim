@@ -36,7 +36,7 @@ public class RouteServiceImpl implements RouteService {
     @Override
     public Route createRoute(Route route) {
         try {
-            // Save the route first to generate its ID
+            //Save the route first to generate its ID
             for (Waypoint waypoint : route.getWaypoints())
                 waypoint.setRoute(route);
             route = repository.save(route);
@@ -60,7 +60,6 @@ public class RouteServiceImpl implements RouteService {
         Route route = getRoute(id);
         route.setName(updatedRoute.getName());
         route.setStops(updatedRoute.getStops());
-        route.setSchedule(updatedRoute.getSchedule());
         return repository.save(route);
     }
 

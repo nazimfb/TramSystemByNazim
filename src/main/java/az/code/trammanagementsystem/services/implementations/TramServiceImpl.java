@@ -99,17 +99,14 @@ public class TramServiceImpl implements TramService {
         List<Tram> activeTrams = repository.findByCurrentRouteNotNull();
         for (Tram activeTram : activeTrams) {
             Route currentRoute = activeTram.getCurrentRoute();
-            if (currentRoute != null && !currentRoute.getTramTrajectories().isEmpty()) {
+            if (currentRoute != null && currentRoute.getTramTrajectories() != null && !currentRoute.getTramTrajectories().isEmpty()) {
                 List<TramTrajectory> tramTrajectories = currentRoute.getTramTrajectories();
 
-                // Get the current position of the tram
                 double currentLat = activeTram.getLatitude();
                 double currentLng = activeTram.getLongitude();
 
-                // Find the closest trajectory point to the tram's current position
                 TramTrajectory closestTrajectory = findClosestTrajectory(tramTrajectories, currentLat, currentLng);
 
-                // Update tram's position to the next trajectory point
                 int currentIndex = tramTrajectories.indexOf(closestTrajectory);
                 int nextIndex = (currentIndex + 1) % tramTrajectories.size(); // Wrap around if reached the end
 

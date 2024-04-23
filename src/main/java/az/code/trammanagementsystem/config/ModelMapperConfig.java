@@ -9,8 +9,6 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.UUID;
-
 @Configuration
 public class ModelMapperConfig {
     @Bean
@@ -26,12 +24,13 @@ public class ModelMapperConfig {
 
         modelMapper.typeMap(Tram.class, TramSummaryDTO.class)
                 .addMappings(mapper -> mapper.using(context -> mapRouteToActive((Route) context.getSource())).map(Tram::getCurrentRoute, TramSummaryDTO::setActive))
+                .addMappings(mapper -> mapper.map(tram -> tram.getDriver().getId(), TramSummaryDTO::setDriverId))
                 .addMappings(mapper -> mapper.map(tram -> tram.getDriver().getName(), TramSummaryDTO::setDriverName));
 //                .addMappings(mapper -> mapper.map(tram -> tram.getCurrentRoute().getId(), TramSummaryDTO::setCurrentRouteId))
 //                .addMappings(mapper -> mapper.map(tram -> tram.getCurrentRoute().getName(), TramSummaryDTO::setCurrentRouteName));
 
         modelMapper.typeMap(Tram.class, ActiveTramDTO.class)
-                .addMappings(mapper -> mapper.map(tram -> tram.getDriver().getId(), ActiveTramDTO::setDriverId));
+                .addMappings(mapper -> mapper.map(tram -> tram.getDriver().getName(), ActiveTramDTO::setDriverName));
 
         modelMapper.typeMap(Driver.class, DriverDetailsDTO.class)
                         .addMappings(mapper -> mapper.map(driver -> driver.getCurrentTram().getId(), DriverDetailsDTO::setCurrentTramId));
