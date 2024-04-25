@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/stops")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://192.168.1.69:8000")
+@CrossOrigin(origins = "http://192.168.10.164:8000/")
 public class StopController {
     private final StopService service;
     private final ModelMapper mapper;

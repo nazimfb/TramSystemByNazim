@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -24,11 +25,12 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-//                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/*").permitAll()
                         .requestMatchers("/map").permitAll() // Allow access to /map without authentication
                         .requestMatchers(HttpMethod.GET, "/api/v1/stops").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/dashboard").hasAnyAuthority("USER", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/v1/routes/waypoints").hasAnyAuthority("USER", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/v1/trams/active").hasAnyAuthority("USER", "ADMIN")
                         .requestMatchers("/api/v1/*").hasAuthority("ADMIN")

@@ -35,7 +35,7 @@ public class TrajectoryHelper {
                         double distance = calculateDistance(currentLat, currentLng, nextLat, nextLng);
 
                         // if distance is greater than 20metres then add tram trajectory points
-                        while (distance > 20) {
+                        while (distance > 10) {
                             double fraction = 10 / distance;
                             double newLat = currentLat + (nextLat - currentLat) * fraction;
                             double newLng = currentLng + (nextLng - currentLng) * fraction;

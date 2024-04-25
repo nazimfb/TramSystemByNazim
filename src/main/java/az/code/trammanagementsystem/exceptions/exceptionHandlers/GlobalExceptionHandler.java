@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
                 .map(error -> error.getDefaultMessage() != null
                         ? error.getDefaultMessage()
                         : "Validation error occurred.")
-                .toList().getFirst();
+                .toList().get(0);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorInfo.builder()
                 .status(400).message(errorMessage).build());

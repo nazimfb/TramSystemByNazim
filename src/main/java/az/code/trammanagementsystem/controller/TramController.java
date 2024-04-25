@@ -16,7 +16,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/trams")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://192.168.1.69:8000")
+@CrossOrigin(origins = {"http://192.168.10.164:8000", "http://192.168.10.164:8000/*"})
 public class TramController {
     private final TramService service;
     private final ModelMapper mapper;

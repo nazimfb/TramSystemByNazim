@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://192.168.1.69:8000")
+@CrossOrigin(origins = {"http://192.168.10.164:8000", "http://192.168.10.164:8000/*"})
 public class UserController {
     private final UserService service;
     private final ModelMapper mapper;
